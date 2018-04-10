@@ -9,11 +9,12 @@ import System.Exit
 data Msg = Inc | Dec | Exit
 
 actor ch num = do
+  print num
   mesg <- atomically $ readTChan ch
   case mesg of
     Exit -> return ()
-    Inc -> print num >> actor ch (num+1)
-    Dec -> print num >> actor ch (num-1)
+    Inc -> actor ch (num+1)
+    Dec -> actor ch (num-1)
 
 
 fireKey chan 'i' = atomically $ writeTChan chan Inc
